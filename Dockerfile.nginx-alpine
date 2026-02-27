@@ -12,20 +12,20 @@ RUN \
   apk update && \
   apk upgrade --no-cache && \
   apk add --no-cache \
-    gcc \
-    build-base \
-    bind-tools \
-    postgresql16-client \
-    xmlsec \
-    git \
-    util-linux \
-    curl-dev \
-    openssl \
-    libffi-dev \
-    python3-dev \
-    libpq-dev \
-    && \
-    rm -rf /var/cache/apk/* && \
+  gcc \
+  build-base \
+  bind-tools \
+  postgresql16-client \
+  xmlsec \
+  git \
+  util-linux \
+  curl-dev \
+  openssl \
+  libffi-dev \
+  python3-dev \
+  libpq-dev \
+  && \
+  rm -rf /var/cache/apk/* && \
   true
 COPY requirements.txt requirements-dev.txt ./
 # CPUCOUNT=1 is needed, otherwise the wheel for uwsgi won't always be build succesfully
@@ -42,17 +42,17 @@ RUN npm install -g yarn --force
 
 # installing DefectDojo packages
 RUN pip3 install \
-	--no-cache-dir \
-	--no-index \
+  --no-cache-dir \
+  --no-index \
   --find-links=/tmp/wheels \
-	-r ./requirements.txt
+  -r ./requirements.txt
 
 # needed for static files debug toolbar
 RUN pip3 install \
-	--no-cache-dir \
-	--no-index \
+  --no-cache-dir \
+  --no-index \
   --find-links=/tmp/wheels \
-	-r ./requirements-dev.txt
+  -r ./requirements-dev.txt
 
 # generate static files
 COPY components/ ./components/
@@ -78,6 +78,7 @@ RUN \
   chmod -R g=u /var/run/defectdojo && \
   mkdir -p /etc/nginx/ssl && \
   chmod -R g=u /etc/nginx && \
+  chmod 755 /entrypoint-nginx.sh && \
   rm -rf /var/cache/apk/* && \
   true
 ENV \
