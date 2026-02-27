@@ -919,6 +919,7 @@
                                             {% trans "Add New Endpoint" %}
                                         </a>
                                     </li>
+                                    {% endif %}
                                     {% if product_tab.product|has_object_permission:"Location_Edit" and
                                     system_settings.enable_endpoint_metadata_import %}
                                     <li>
