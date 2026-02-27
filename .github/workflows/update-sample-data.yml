@@ -1,0 +1,43 @@
+name: Update Sample Data
+
+env:
+  GIT_USERNAME: "DefectDojo release bot"
+  GIT_EMAIL: "dojo-release-bot@users.noreply.github.com"
+
+on:
+  workflow_dispatch: # Trigger manually
+  schedule:
+    # Run on the 1st day of January, April, July, and October at midnight UTC
+    - cron: '0 0 1 1,4,7,10 *'
+
+jobs:
+  run-binary-and-create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.ref_name || 'dev'}}
+
+      - name: Run binary
+        run: |
+          ./fixture-updater dojo/fixtures/defect_dojo_sample_data.json
+          mv output.json dojo/fixtures/defect_dojo_sample_data.json
+          ./fixture-updater dojo/fixtures/defect_dojo_sample_data_locations.json
+          mv output.json dojo/fixtures/defect_dojo_sample_data_locations.json
+
+      - name: Configure git
+        run: |
+          git config --global user.name "${{ env.GIT_USERNAME }}"
+          git config --global user.email "${{ env.GIT_EMAIL }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update sample data"
+          branch: update-sample-data
+          base: dev
+          title: "Update sample data"
+          body: "This pull request updates the sample data."
