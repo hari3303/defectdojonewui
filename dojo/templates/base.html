@@ -102,8 +102,6 @@
     <script src="{% static " dojo/js/custom-ui.js" %}"></script>
 
     <style>
-        /* {% block add_styles %} */
-        /* {% endblock %} */
     </style>
 </head>
 
@@ -432,7 +430,6 @@
                                 {% endif %}
                             </ul>
                         </li>
-                        {% block reports_tab %}
                         <li>
                             <a href="{% url 'report_builder' %}" aria-expanded="false" aria-label="Reports">
                                 <i class="fa-solid fa-file-lines fa-fw"></i>
@@ -448,7 +445,6 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        {% endblock %}
                         <li>
                             <a href="{% url 'metrics' %}?date=5&view=dashboard" aria-expanded="false"
                                 aria-label="Metrics">
@@ -582,7 +578,7 @@
                                 </li>
                                 {% endif %}
                                 {% if system_settings.enable_github and
-                                "dojo.view_github_conf"|has_configuration_permission:request%}
+                                "dojo.view_github_conf"|has_configuration_permission:request %}
                                 <li>
                                     <a href="{% url 'github' %}">
                                         {% trans "GitHub" %}
